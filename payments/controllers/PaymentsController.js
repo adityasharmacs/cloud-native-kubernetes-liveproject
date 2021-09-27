@@ -8,6 +8,19 @@ class PaymentsController {
         this.logger = logger
     }
 
+    async handleReadiness(req,res) {
+        //ToDo:Implementation
+        res.status(200)
+        res.end() 
+    }
+
+    async handleLiveness(req,res){
+        //ToDo:Implementation
+        res.status(200)
+        res.end()
+    }
+
+
     async handleGetPaymentMethod(req, res) {
         const pm = await this.paymentRepository.getPaymentMethod()
 
@@ -167,6 +180,14 @@ module.exports = (repositories, logger) => {
 
     router.post('/process', function (req, res) {
         controller.handleProcessPayment(req, res)
+    })
+
+    router.get('/readiness', funtion(req,res) {
+        controller.handleReadiness(req,res)
+    })
+
+    router.get('/liveness', function (req, res) {
+        controller.handleReadiness(req, res)
     })
 
     return router

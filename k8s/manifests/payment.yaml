@@ -26,6 +26,13 @@ spec:
           - name: CONFIG_DIR
             value: "/opt/sns/app/config"
         imagePullPolicy: "Never"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "300m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
 ---
 apiVersion: v1
 kind: Service
