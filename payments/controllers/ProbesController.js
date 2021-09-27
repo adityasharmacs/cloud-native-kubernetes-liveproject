@@ -3,15 +3,12 @@ class ProbesController{
 
     async handleLiveness(req,res) {
         //ToDo: Implement Liveness Probe
-        res.status(200)
-        res.end()
+        res.send({"ok": true})
     }
 
     async handleReadiness(req,res) {
-        res.status(200)
-        res.end()
+        res.send({"ok": true})
     }
-
 }
 
     module.exports = (repositories) =>{
@@ -27,6 +24,6 @@ class ProbesController{
         router.get('/readiness', function(req,res) {
             controller.handleReadiness(req,res)
         })
-    }
     
     return router
+}
