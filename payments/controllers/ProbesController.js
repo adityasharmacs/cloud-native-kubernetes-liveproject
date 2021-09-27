@@ -1,4 +1,3 @@
-const repositories = require("../repositories")
 
 class ProbesController{
 
