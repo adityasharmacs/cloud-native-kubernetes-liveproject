@@ -182,7 +182,7 @@ module.exports = (repositories, logger) => {
         controller.handleProcessPayment(req, res)
     })
 
-    router.get('/readiness', funtion(req,res) {
+    router.get('/readiness', function(req,res) {
         controller.handleReadiness(req,res)
     })
 
