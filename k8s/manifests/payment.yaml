@@ -1,3 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: payment-config
+  namespace: sns
+data:
+  config.json: |
+    {
+      "server_port": 3000,
+      "redis_host": "redis",
+      "redis_port": 6379
+    }
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -50,6 +64,13 @@ spec:
             port: 3000
           initialDelaySeconds: 10
           periodSeconds: 30
+        volumeMounts:
+          - name: payment-config
+            mountPath: "/opt/sns/config"
+      volumes:
+        - name: payment-config
+          configMap:
+            name: payment-config
          
 ---
 apiVersion: v1
