@@ -1,0 +1,106 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: subscription-config
+  namespace: sns
+data:
+  config.json: |
+    {
+      "server_port": 3001,
+      "redis_host": "redis",
+      "redis_port": 6379,
+      "paymentUrlBase": "http://payment:3000",
+      "amountPerMonth": 25.00
+    }
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  subscription
+  namespace: sns
+  labels:
+    app:  subscription
+spec:
+  selector:
+    matchLabels:
+      app: subscription
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  subscription
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  subscription
+        image:  sns-subscription:latest
+        resources:
+          requests:
+            cpu: 250m
+            memory: 128Mi
+          limits:
+            cpu: 300m
+            memory: 256Mi
+        livenessProbe:
+          httpGet:
+            path: /probes/liveness
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /probes/readiness
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: CONFIG_DIR
+          value: "/opt/sns/config"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-conf
+              key: redis_password
+        ports:
+        - containerPort:  3001
+        volumeMounts:
+        - name: subscription-config
+          mountPath: "/opt/sns/config"
+      volumes:
+        - name: subscription-config
+          configMap:
+            name: subscription-config
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscription
+  namespace: sns
+  labels:
+    app: subscription
+spec:
+  selector:
+    app: subscription
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+  - port: 3001
+    targetPort: 3001

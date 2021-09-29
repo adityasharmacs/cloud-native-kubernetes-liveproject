@@ -8,7 +8,7 @@ class SubscriptionsController {
     }
 
     async handleGetSubscription(req, res) {
-        // TODO: Implementation   
+        
         const subscription = await this.subscriptionRepository.getSubscription()
 
         if(!subscription){
@@ -21,7 +21,7 @@ class SubscriptionsController {
     }
 
     async handleAddSubscription(req, res) {
-        // TODO: Implementation       
+        
         const subscription = this.transformToDomainFormat(req.body)
 
         if(subscription.error){
@@ -38,7 +38,7 @@ class SubscriptionsController {
     }
 
     async handleCancelSubscription(req, res) {
-        // TODO: Implementation 
+         
         const subscription = await this.subscriptionRepository.getSubscription()
 
         if(!subscription) {
