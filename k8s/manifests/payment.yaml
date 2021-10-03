@@ -42,7 +42,7 @@ spec:
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: redis-config
+                name: mysecret
                 key: redis_password
         imagePullPolicy: "Never"
         resources:
