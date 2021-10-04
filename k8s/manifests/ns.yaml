@@ -8,17 +8,6 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysecret
-  namespace: default
-type: Opaque
-data:
-  redis_password:  LSBmb29iYXJlZAo= 
-
----
-
-apiVersion: v1
-kind: Secret
-metadata:
   name: ingress-cert
   namespace: sns
 type: "kubernetes.io/tls"
