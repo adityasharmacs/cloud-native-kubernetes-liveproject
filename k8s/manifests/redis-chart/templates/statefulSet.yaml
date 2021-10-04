@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  serviceName: redis
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: "{{ .Values.image.repository }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        args:
+          {{- toYaml .Values.image.args | nindent 10 }}
+        ports:
+        - containerPort: 6379
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        {{- toYaml .Values.volumeMounts | nindent 8 }}
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}
+  volumeClaimTemplates:
+  {{- toYaml .Values.volumeClaimTemplates | nindent 2 }}
