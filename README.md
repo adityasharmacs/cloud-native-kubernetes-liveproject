@@ -43,10 +43,19 @@ to check if the helm chart works correctly or not.
 
 1. helm template redis redis-chart --debug
 2. helm template subscriptions subscriptions-chart --debug
-3. 
+3. helm template payment payment-chart --debug
 
 
 For glancing through the final Charts generated from all the subcharts we use the following command:
 helm template snsChart charts/sns-chart --debug
 
-ad the pwd is -> Root of the Project
+and the pwd is -> Root of the Project
+
+## Helm Dependency Building for the subcharts
+helm dep build charts/sns-chart/charts/
+
+
+## Helm check if ghe Subcharts are well formed
+helm lint charts/sns-chart/charts/ --with-subcharts
+
+
