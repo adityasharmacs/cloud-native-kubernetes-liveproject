@@ -30,3 +30,23 @@ For those learners who may be unfamiliar with Javascript and Node.js, there is a
 This starting point can be found on the branch `milestone2/base`: https://github.com/robpacheco/cloud-native-kubernetes-liveproject/tree/milestone2/base
 
 
+## Helm Chart implementation
+
+I have used the Helm Chart to implement the K8 templates, all the 3 - SUbscriptions, redis and Payments will be implemented as a sub chart inside of the biggerr chart umbrella
+This way we dont need to deploy each of them individually and then run it once and it will deploy all 3 resources.
+
+Use ->
+
+helm template name chartName --debug
+
+to check if the helm chart works correctly or not.
+
+1. helm template redis redis-chart --debug
+2. helm template subscriptions subscriptions-chart --debug
+3. 
+
+
+For glancing through the final Charts generated from all the subcharts we use the following command:
+helm template snsChart charts/sns-chart --debug
+
+ad the pwd is -> Root of the Project
